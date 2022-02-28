@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public final class IOFacility {
 
-  public static final void closeResource(Closeable closeable) {
+  public static void closeResource(Closeable closeable) {
     try {
       closeable.close();
     } catch (IOException e) {

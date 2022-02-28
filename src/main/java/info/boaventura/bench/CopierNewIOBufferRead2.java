@@ -2,7 +2,6 @@ package info.boaventura.bench;
 
 import java.io.*;
 import java.nio.ByteBuffer;
-import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
 import static info.boaventura.bench.IOFacility.closeResource;
@@ -33,11 +32,11 @@ public class CopierNewIOBufferRead2 implements Copier {
   }
 
   public String getStrategy() {
-    return "Cópia de NewIO com MappedByteBuffer Bufferizado (BUFFER: " + BUFFER + ")";
+    return "Copie de NewIO avec bufferized MappedByteBuffer (BUFFER: " + BUFFER + ")";
   }
 
   public void read() throws IOException {
-    // Read file into buffer
+    // Lire le fichier de buffer
     buffer = ByteBuffer.allocateDirect(BUFFER);
   }
 

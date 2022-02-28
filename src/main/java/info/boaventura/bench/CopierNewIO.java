@@ -28,24 +28,24 @@ public class CopierNewIO implements Copier {
   }
 
   public void initialize() throws IOException {
-    // Reading
+    // En train de lire
     readFile = new RandomAccessFile(origin, "r");
     readFileChannel = readFile.getChannel();
-    // Writing
+    // En écrivant
     writeFile = new RandomAccessFile(destiny, "rw");
     writeFileChannel = writeFile.getChannel();
   }
 
   public String getStrategy() {
-    return "Cópia de NewIO";
+    return "Copie de NewIO";
   }
 
   public void read() throws IOException {
-    // Read file into buffer
+    // Lire fichier de buffer
   }
 
   public void write() throws IOException {
-    // Write file into buffer
+    // Ecrire le fichier dans buffer
     readFileChannel.transferTo(0, fileToCopy.length(), writeFileChannel);
   }
 

@@ -3,18 +3,12 @@ package info.boaventura.bench;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.channels.FileChannel;
 
 public class CopierJournalDevSolution3 implements Copier {
 
   File source;
   File destiny;
-
-  FileChannel sourceChannel;
-  FileChannel destChannel;
 
   public CopierJournalDevSolution3(String source, String destiny) {
     this.source = new File(source);

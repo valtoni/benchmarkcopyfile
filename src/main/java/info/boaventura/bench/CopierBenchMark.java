@@ -1,6 +1,5 @@
 package info.boaventura.bench;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
@@ -43,25 +42,25 @@ public class CopierBenchMark implements Copier {
   public void initialize() throws IOException {
     start();
     copier.initialize();
-    end("initialize");
+    end("initialiser");
   }
 
   public void read() throws IOException {
     start();
     copier.read();
-    end("read");
+    end("lire");
   }
 
   public void write() throws IOException {
     start();
     copier.write();
-    end("write");
+    end("écrivez");
   }
 
   public void close() {
     start();
     copier.close();
-    end("close");
+    end("fermer");
   }
 
   @Override
@@ -81,7 +80,7 @@ public class CopierBenchMark implements Copier {
       System.out.printf("%s: %s\n", point.op, human(point.duration));
       total = total.plus(point.duration);
     }
-    System.out.println("Total duration: " + human(total));
+    System.out.println("Dureé totale: " + human(total));
   }
 
   @Override

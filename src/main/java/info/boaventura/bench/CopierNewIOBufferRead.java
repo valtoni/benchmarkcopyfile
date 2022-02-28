@@ -26,27 +26,27 @@ public class CopierNewIOBufferRead implements Copier {
   }
 
   public void initialize() throws IOException {
-    // Reading
+    // En train de lire
     readFile = new RandomAccessFile(origin, "r");
     readFileChannel = readFile.getChannel();
     bufferRead = readFileChannel.map(FileChannel.MapMode.READ_ONLY, 0, readFileChannel.size());
-    // Writing
+    // En écrivant
     writeFile = new RandomAccessFile(destiny, "rw");
     writeFileChannel = writeFile.getChannel();
     bufferWrite = writeFileChannel.map(FileChannel.MapMode.READ_WRITE, 0, readFileChannel.size());
   }
 
   public String getStrategy() {
-    return "Cópia de NewIO com MappedByteBuffer";
+    return "Copie de NewIO avec MappedByteBuffer";
   }
 
   public void read() throws IOException {
-    // Read file into buffer
+    // Lire fichier de buffer
     bufferRead.load();
   }
 
   public void write() {
-    // Write file into buffer
+    // Ecrire le fichier dans buffer
     bufferWrite.put(bufferRead);
   }
 
