@@ -17,7 +17,7 @@ public class CopierJournalDevSolution3 implements Copier {
 
   @Override
   public String getStrategy() {
-    return "Solution 3 (commons-io 2.6): https://www.journaldev.com/861/java-copy-file";
+    return "Solution 3 (commons-io 2.7): https://www.journaldev.com/861/java-copy-file";
   }
 
   @Override
