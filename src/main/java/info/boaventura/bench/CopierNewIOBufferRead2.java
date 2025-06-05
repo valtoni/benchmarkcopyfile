@@ -32,7 +32,7 @@ public class CopierNewIOBufferRead2 implements Copier {
   }
 
   public String getStrategy() {
-    return "Copie de NewIO avec bufferized MappedByteBuffer (BUFFER: " + BUFFER + ")";
+    return "Copie de NewIO avec direct ByteBuffer (BUFFER: " + BUFFER + ")";
   }
 
   public void read() throws IOException {
