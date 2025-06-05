@@ -24,6 +24,8 @@ public class Main {
     } catch (Exception e) {
       System.err.println("*** Erreur benching: " + e.getMessage());
     } finally {
+      // close resources even in case of errors
+      copierNewIOBufferReadBenchmark.close();
       copierNewIOBufferReadBenchmark.summary();
       copierNewIOBufferReadBenchmark.cleanup();
       printHead();
