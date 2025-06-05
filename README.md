@@ -1,11 +1,12 @@
-Codebase Overview
+# Benchmark Copy File
 
-This repository is a small Maven project whose purpose is to benchmark different techniques for copying a file in Java.
+This repository is a small Maven project that benchmarks different techniques for copying a file in Java. The original README described it in French as:
 
-The README explains in French that it is “A simple project to save time when copying local files.”
+> Un projet simple pour gagner du temps de copie de fichiers locaux.
 
-Project structure
+## Project structure
 
+```
 benchmarkcopyfile/
 ├── pom.xml
 └── src
@@ -22,84 +23,46 @@ benchmarkcopyfile/
                 ├── CopierNewIO.java
                 ├── CopierNewIOBufferRead.java
                 └── CopierNewIOBufferRead2.java
+```
 
-The build configuration in pom.xml specifies Java 11 and depends on Apache Commons IO 2.7
+The build configuration in `pom.xml` uses **Java 11** and depends on **Apache Commons IO 2.7**.
 
-.
-Core Components
+## Core Components
 
-    Copier Interface
+### Copier Interface
+Defines the methods every strategy must implement—initialize resources, read, write, close, cleanup—and provide a human readable description.
 
-    Defines the methods every strategy must implement—initialize resources, read, write, close, and cleanup—plus a description of the strategy
+### Main Class
+Generates a 1 GiB file in the system temp directory and runs a benchmark for each copying strategy. Each strategy is wrapped in `CopierBenchMark` which times the steps and prints a summary.
 
-.
+### CopierBenchMark
+Measures duration for each stage (initialize, read, write, close) using `java.time` and prints a human-readable summary.
 
-Main Class
-
-Generates a 1 GiB file in the system temp directory, then runs a benchmark for each copying strategy. Each strategy is wrapped in a CopierBenchMark instance that times the steps and prints a summary
-
-.
-
-CopierBenchMark
-
-Measures duration for each stage (initialize, read, write, close) using java.time and prints a human‑readable summary
-
-.
-
-Copy Implementations
-
+### Copy Implementations
 Several classes provide different file-copy techniques:
 
-    CopierJournalDevSolution1: uses FileInputStream/FileOutputStream with a configurable byte buffer
+- `CopierJournalDevSolution1`: uses `FileInputStream`/`FileOutputStream` with a configurable byte buffer.
+- `CopierJournalDevSolution2`: uses NIO `FileChannel.transferFrom`.
+- `CopierJournalDevSolution3`: delegates to `FileUtils.copyFile` from Commons IO.
+- `CopierNewIO`: uses `FileChannel.transferTo` to copy directly between channels.
+- `CopierNewIOBufferRead`: memory‑maps the file with `MappedByteBuffer` and writes from the mapped buffer.
+- `CopierNewIOBufferRead2`: reads chunks with a direct `ByteBuffer` and writes them out with NIO channels.
 
-.
+Every implementation cleans up by deleting the destination file in `cleanup()`.
 
-CopierJournalDevSolution2: uses NIO FileChannel.transferFrom
+### IOFacility
+A helper to close resources and log any errors.
 
-.
+## Important Notes
+1. **Benchmark Execution** – running `Main` creates a large (1 GiB) temp file and sequentially runs each strategy. It may take time and disk space.
+2. **No Unit Tests** – the repository doesn’t contain automated tests, so verification is manual.
+3. **Dependencies** – only Apache Commons IO is required. Everything else is standard Java 11.
 
-CopierJournalDevSolution3: delegates to FileUtils.copyFile from Commons IO
-
-.
-
-CopierNewIO: uses FileChannel.transferTo to copy directly between channels
-
-.
-
-CopierNewIOBufferRead: memory‑maps the file into MappedByteBuffer and writes from the mapped buffer
-
-.
-
-CopierNewIOBufferRead2: reads chunks with a direct ByteBuffer in a loop, writing them out with NIO channels
-
-    .
-
-Every implementation cleans up by deleting the destination file in cleanup().
-
-IOFacility
-
-A small helper to close resources and log any errors
-
-    .
-
-Important Notes
-
-    Benchmark Execution – Running Main will create a large temp file (1 GiB) and then invoke each strategy sequentially. This may consume disk space and take time depending on your environment.
-
-    No Unit Tests – The repo doesn’t contain automated tests, so verification relies on manual runs.
-
-    Dependencies – Only Apache Commons IO is required. Everything else is standard Java 11.
-
-Suggestions for Learning Next
-
-    Explore Java NIO – Understanding memory-mapped files (MappedByteBuffer), FileChannel, and direct byte buffers will help you grasp why certain strategies might outperform others.
-
-    Benchmarking Techniques – Review how java.time is used to measure durations and consider more advanced benchmarking (e.g., JMH) for precise measurements.
-
-    Error Handling and Resource Management – Some strategies have minimal error handling. Investigate try-with-resources and better exception logging.
-
-    More Strategies – Try implementing additional copy methods such as asynchronous or multi-threaded copy, or benchmarking on different file sizes and file systems.
-
-    Build/Packaging – Since it’s a Maven project, learning about running mvn package or creating a runnable JAR will make it easier to execute outside the IDE.
+## Suggestions for Learning Next
+- **Explore Java NIO** – understand memory-mapped files, `FileChannel`, and direct buffers to see why some strategies are faster.
+- **Benchmarking Techniques** – look into more precise tools such as JMH.
+- **Error Handling and Resource Management** – consider `try-with-resources` and better exception logging.
+- **More Strategies** – try implementing asynchronous or multi-threaded copy, or vary file sizes.
+- **Build/Packaging** – learn how to run `mvn package` or create a runnable JAR.
 
 This codebase is straightforward and focused on demonstrating file-copy approaches. Understanding these classes provides a good foundation for experimenting with Java I/O performance and learning how different libraries and APIs affect throughput.
